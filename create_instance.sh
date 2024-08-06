@@ -5,6 +5,7 @@ IMAGE_PROJECT=northam-ce-mlai-tpu
 PROJECT_NUMBER=9452062936
 ZONE=asia-northeast1-b
 NETWORK_PREFIX=deshaw-test
+PROVISION_MODE=SPOT #spot or standard
 SYS_SUBNET=$NETWORK_PREFIX-mgmt-sub
 GPU0_SUBNET=$NETWORK_PREFIX-gpunet-1-subnet
 GPU1_SUBNET=$NETWORK_PREFIX-gpunet-2-subnet
@@ -22,7 +23,6 @@ GPU7_SUBNET=$NETWORK_PREFIX-gpunet-8-subnet
 # --image-family=projects/hpc-toolkit-gsc/global/images/debian-12-bookworm-v20240515-tcpxo \
 # --image=debian-12-bookworm-tcpxo-v20240515-20240730212714z \
 
-gcloud config set compute/zone $ZONE
 gcloud alpha compute instances bulk create \
     --count=1 \
     --name-pattern=a3mega-vms-#### \
@@ -42,7 +42,8 @@ gcloud alpha compute instances bulk create \
     --network-interface=nic-type=GVNIC,subnet=${GPU6_SUBNET} \
     --network-interface=nic-type=GVNIC,subnet=${GPU7_SUBNET} \
     --metadata=enable-oslogin=true \
-    --provisioning-model=STANDARD \
+    --provisioning-model=$PROVISION_MODE \
+    --zone=$ZONE
     #--reservation-affinity=specific \
     #--reservation=${RESERVATION} \
     #--resource-policies=${PLACEMENT_POLICY_NAME} \
