@@ -14,7 +14,7 @@ SYS_SUBNET=$NETWORK_PREFIX-mgmt-sub
 BASE_IMAGE=debian-12-bookworm-v20240709
 VM_NAME=${BASE_IMAGE}-tcpxo-$(date +%Y%m%d%H%M%Sz)
 
-
+gcloud config set compute/zone $ZONE
 gcloud compute instances create \
   ${VM_NAME} \
   --project=$PROJECT \
