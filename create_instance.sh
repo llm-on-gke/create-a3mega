@@ -44,9 +44,6 @@ gcloud alpha compute instances bulk create \
     --metadata=enable-oslogin=true \
     --provisioning-model=$PROVISION_MODE \
     --zone=$ZONE
-    #--reservation-affinity=specific \
-    #--reservation=${RESERVATION} \
-    #--resource-policies=${PLACEMENT_POLICY_NAME} \
     --maintenance-interval=PERIODIC \
     --service-account=$PROJECT_NUMBER-compute@developer.gserviceaccount.com \
     --scopes=https://www.googleapis.com/auth/cloud-platform \
