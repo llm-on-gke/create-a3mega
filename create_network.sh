@@ -16,14 +16,14 @@ gcloud compute networks subnets create $NETWORK_PREFIX-mgmt-sub \
   --region=$REGION \
   --range=192.168.0.0/24
 
-gcloud compute firewall-rules create two-sigma-h100-mgmt-internal \
+gcloud compute firewall-rules create $NETWORK_PREFIX-mgmt-internal \
  --project=$PROJECT \
  --network=$NETWORK_PREFIX-mgmt-net \
  --action=ALLOW \
  --rules=tcp:0-65535,udp:0-65535,icmp \
  --source-ranges=192.168.0.0/16
 
-gcloud compute firewall-rules create two-sigma-h100-mgmt-external-ssh \
+gcloud compute firewall-rules create $NETWORK_PREFIX-mgmt-external-ssh \
  --project=$PROJECT_ID \
  --network=$NETWORK_PREFIX-mgmt-net \
  --action=ALLOW \
