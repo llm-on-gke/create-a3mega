@@ -44,7 +44,7 @@ gcloud alpha compute instances bulk create \
     --metadata=enable-oslogin=true \
     --provisioning-model=$PROVISION_MODE \
     --zone=$ZONE \
-    --maintenance-interval=PERIODIC \
+    --on-host-maintenance=MIGRATE \
     --service-account=$PROJECT_NUMBER-compute@developer.gserviceaccount.com \
     --scopes=https://www.googleapis.com/auth/cloud-platform \
     --boot-disk-size=200 \
