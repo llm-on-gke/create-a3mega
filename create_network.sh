@@ -28,7 +28,7 @@ gcloud compute firewall-rules create $NETWORK_PREFIX-mgmt-external-ssh \
  --network=$NETWORK_PREFIX-mgmt-net \
  --action=ALLOW \
  --rules=tcp:22 \
- --source-ranges=192.168.0.0/16
+ --source-ranges=35.235.240.0/20
 
 for N in $(seq 2 8); do
 gcloud compute networks create $NETWORK_PREFIX-net-$N \
