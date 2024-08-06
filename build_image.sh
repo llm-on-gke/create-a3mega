@@ -21,8 +21,6 @@ gcloud compute instances create \
   --no-boot-disk-auto-delete \
   --image=$BASE_IMAGE \
   --image-project=debian-cloud \
-  #--project=hpc-toolkit-gsc \
-  --zone=$ZONE \
   --machine-type=c2-standard-8 \
   --maintenance-policy=TERMINATE \
   --restart-on-failure \
