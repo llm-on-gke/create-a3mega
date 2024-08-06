@@ -4,7 +4,7 @@ PROJECT=northam-ce-mlai-tpu
 IMAGE_PROJECT=northam-ce-mlai-tpu
 PROJECT_NUMBER=9452062936
 ZONE=asia-northeast1-b
-NETWORK_PREFIX=deshaw
+NETWORK_PREFIX=deshaw-test
 SYS_SUBNET=$NETWORK_PREFIX-mgmt-sub
 GPU0_SUBNET=$NETWORK_PREFIX-gpunet-1-subnet
 GPU1_SUBNET=$NETWORK_PREFIX-gpunet-2-subnet
@@ -22,15 +22,13 @@ GPU7_SUBNET=$NETWORK_PREFIX-gpunet-8-subnet
 # --image-family=projects/hpc-toolkit-gsc/global/images/debian-12-bookworm-v20240515-tcpxo \
 # --image=debian-12-bookworm-tcpxo-v20240515-20240730212714z \
 
-
+gcloud config set compute/zone $ZONE
 gcloud alpha compute instances bulk create \
     --count=1 \
     --name-pattern=a3mega-vms-#### \
     --project=$PROJECT \
     --image-project=$IMAGE_PROJECT \
     --image-family=debian-12-bookworm-v20240709-tcpxo \
-    #--project=hpc-toolkit-gsc \
-    --zone=$ZONE \
     --machine-type=a3-megagpu-8g \
     --maintenance-policy=TERMINATE \
     --restart-on-failure \
