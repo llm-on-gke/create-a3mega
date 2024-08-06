@@ -1,21 +1,23 @@
 #!/bin/bash
 set -eu
+PROJECT=northam-ce-mlai-tpu
+IMAGE_PROJECT=northam-ce-mlai-tpu
+PROJECT_NUMBER=9452062936
+ZONE=asia-northeast1-b
+NETWORK_PREFIX=deshaw
+SYS_SUBNET=$NETWORK_PREFIX-mgmt-sub
+GPU0_SUBNET=$NETWORK_PREFIX-gpunet-1-subnet
+GPU1_SUBNET=$NETWORK_PREFIX-gpunet-2-subnet
+GPU2_SUBNET=$NETWORK_PREFIX-gpunet-3-subnet
+GPU3_SUBNET=$NETWORK_PREFIX-gpunet-4-subnet
+GPU4_SUBNET=$NETWORK_PREFIX-gpunet-5-subnet
+GPU5_SUBNET=$NETWORK_PREFIX-gpunet-6-subnet
+GPU6_SUBNET=$NETWORK_PREFIX-gpunet-7-subnet
+GPU7_SUBNET=$NETWORK_PREFIX-gpunet-8-subnet
 
-PROJECT=hpc-toolkit-gsc
-IMAGE_PROJECT=hpc-toolkit-gsc
-ZONE=us-central1-c
-SYS_SUBNET=a3mega-sys-subnet
-GPU0_SUBNET=a3mega-cluster-dev-gpunet-0-subnet
-GPU1_SUBNET=a3mega-cluster-dev-gpunet-1-subnet
-GPU2_SUBNET=a3mega-cluster-dev-gpunet-2-subnet
-GPU3_SUBNET=a3mega-cluster-dev-gpunet-3-subnet
-GPU4_SUBNET=a3mega-cluster-dev-gpunet-4-subnet
-GPU5_SUBNET=a3mega-cluster-dev-gpunet-5-subnet
-GPU6_SUBNET=a3mega-cluster-dev-gpunet-6-subnet
-GPU7_SUBNET=a3mega-cluster-dev-gpunet-7-subnet
-RESERVATION=projects/hpc-toolkit-gsc/reservations/a3-mega-us-central1-c
-RESERVATION=a3-mega-us-central1-c
-PLACEMENT_POLICY_NAME=a3-mega-md2-us-central1
+#RESERVATION=projects/hpc-toolkit-gsc/reservations/a3-mega-us-central1-c
+#RESERVATION=a3-mega-us-central1-c
+#PLACEMENT_POLICY_NAME=a3-mega-md2-us-central1
 
 # --image-family=projects/hpc-toolkit-gsc/global/images/debian-12-bookworm-v20240515-tcpxo \
 # --image=debian-12-bookworm-tcpxo-v20240515-20240730212714z \
@@ -27,8 +29,8 @@ gcloud alpha compute instances bulk create \
     --project=$PROJECT \
     --image-project=$IMAGE_PROJECT \
     --image-family=debian-12-bookworm-v20240709-tcpxo \
-    --project=hpc-toolkit-gsc \
-    --zone=us-central1-c \
+    #--project=hpc-toolkit-gsc \
+    --zone=$ZONE \
     --machine-type=a3-megagpu-8g \
     --maintenance-policy=TERMINATE \
     --restart-on-failure \
@@ -43,11 +45,11 @@ gcloud alpha compute instances bulk create \
     --network-interface=nic-type=GVNIC,subnet=${GPU7_SUBNET} \
     --metadata=enable-oslogin=true \
     --provisioning-model=STANDARD \
-    --reservation-affinity=specific \
-    --reservation=${RESERVATION} \
-    --resource-policies=${PLACEMENT_POLICY_NAME} \
+    #--reservation-affinity=specific \
+    #--reservation=${RESERVATION} \
+    #--resource-policies=${PLACEMENT_POLICY_NAME} \
     --maintenance-interval=PERIODIC \
-    --service-account=266450182917-compute@developer.gserviceaccount.com \
+    --service-account=$PROJECT_NUMBER-compute@developer.gserviceaccount.com \
     --scopes=https://www.googleapis.com/auth/cloud-platform \
     --boot-disk-size=200 \
     --boot-disk-type=pd-ssd \

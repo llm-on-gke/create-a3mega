@@ -35,8 +35,8 @@ gcloud compute networks create $NETWORK_PREFIX-net-$N \
     --subnet-mode=custom \
     --mtu=8244
 
-gcloud compute networks subnets create $NETWORK_PREFIX-sub-$N \
-    --network=$PROJECT_ID-net-$N \
+gcloud compute networks subnets create $NETWORK_PREFIX-gpunet-$N-subnet \
+    --network=$NETWOR_PREFIX-net-$N \
     --region=$REGION \
     --range=192.168.$N.0/24
 
