@@ -3,7 +3,8 @@ set -eu
 NETWORK_PREFIX=deshaw-test
 PROJECT=northam-ce-mlai-tpu
 IMAGE_PROJECT=northam-ce-mlai-tpu
-ZONE=asia-northeast-b
+PROJECT_NUMBER=9452062936
+ZONE=asia-northeast1-b
 SYS_SUBNET=$NETWORK_PREFIX-mgmt-sub
 #RESERVATION=projects/hpc-toolkit-gsc/reservations/a3-mega-us-central1-c
 #RESERVATION=a3-mega-us-central1-c
@@ -20,15 +21,15 @@ gcloud compute instances create \
   --no-boot-disk-auto-delete \
   --image=$BASE_IMAGE \
   --image-project=debian-cloud \
-  --project=hpc-toolkit-gsc \
-  --zone=us-central1-c \
+  #--project=hpc-toolkit-gsc \
+  --zone=$ZONE \
   --machine-type=c2-standard-8 \
   --maintenance-policy=TERMINATE \
   --restart-on-failure \
   --network-interface=nic-type=GVNIC,subnet=${SYS_SUBNET} \
   --metadata=enable-oslogin=true \
   --provisioning-model=STANDARD \
-  --service-account=9452062936-compute@developer.gserviceaccount.com \
+  --service-account=$PROJECT_NUMBER-compute@developer.gserviceaccount.com \
   --scopes=https://www.googleapis.com/auth/cloud-platform \
   --metadata-from-file=startup-script=startup_script.sh \
   --boot-disk-size=200 \
