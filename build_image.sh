@@ -14,13 +14,13 @@ SYS_SUBNET=$NETWORK_PREFIX-mgmt-sub
 BASE_IMAGE=debian-12-bookworm-v20240709
 VM_NAME=${BASE_IMAGE}-tcpxo-$(date +%Y%m%d%H%M%Sz)
 
-gcloud config set compute/zone $ZONE
 gcloud compute instances create \
   ${VM_NAME} \
   --project=$PROJECT \
   --no-boot-disk-auto-delete \
   --image=$BASE_IMAGE \
   --image-project=debian-cloud \
+  --zone=$ZONE \
   --machine-type=c2-standard-8 \
   --maintenance-policy=TERMINATE \
   --restart-on-failure \
