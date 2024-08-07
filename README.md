@@ -91,6 +91,10 @@ for N in $(seq 1 8); do
       --source-ranges=192.168.0.0/16
 done
 ```
+You can run the following script to create the main network VPC and 8 gpu network VPC
+```
+bash create_netwwork.sh
+```
 
 4. Creating A3-Mega VMs. Now that we have the new VM image, we'll use it to
 launch 2 test A3-Mega VMs. First set these variables to match the VPCs that
