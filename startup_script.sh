@@ -19,10 +19,7 @@ apt-mark hold google-osconfig-agent
 
 # Install Pre-requisites
 apt-get update -y
-apt-get install -y build-essential git python3-venv dkms linux-headers-$(uname -r) linux-headers-6.1.0-23-cloud-amd64
-apt-get install -y linux-headers-$(uname -r)
-apt-get install -y linux-headers-cloud-amd64
-apt-get install mdadm --no-install-recommends --assume-yes
+apt-get install -y build-essential git python3-venv dkms linux-headers-$(uname -r) linux-headers-6.1.0-23-cloud-amd64 linux-headers-cloud-amd64 mdadm
 
 # Install GVNIC Driver
 wget -q https://github.com/GoogleCloudPlatform/compute-virtual-ethernet-linux/releases/download/v1.3.4/gve-dkms_1.3.4_all.deb
@@ -31,7 +28,6 @@ dpkg -i gve-dkms_1.3.4_all.deb
 # Install NVIDIA Drivers
 cd /var/tmp/
 wget -q https://us.download.nvidia.com/tesla/${DRIVER_VERSION}/NVIDIA-Linux-x86_64-${DRIVER_VERSION}.run
-ls -l
 sh NVIDIA-Linux-x86_64-550.90.07.run --ui=none --no-questions --dkms -m=kernel-open -k 6.1.0-23-cloud-amd64
 rm ./NVIDIA-Linux-x86_64-${DRIVER_VERSION}.run
 
@@ -116,7 +112,7 @@ network:
                 use-domains: true
 EOF
 
-# Increase limits
+# Increase limits (useful for some communication patterns / larger node counts)
 mkdir -p /etc/security/limits.d/
 cat > /etc/security/limits.d/99-unlimited.conf << 'EOF'
 * - memlock unlimited
@@ -127,7 +123,7 @@ cat > /etc/security/limits.d/99-unlimited.conf << 'EOF'
 * - rtprio unlimited
 EOF
 
-# Install and enable persistenced
+# Install and enable nvidia-persistenced
 useradd -s /sbin/nologin -d '/' -c 'NVIDIA Persistence Daemon' -r nvidia-persistenced
 cat > /usr/lib/systemd/system/nvidia-persistenced.service << 'EOF'
 [Unit]
@@ -205,7 +201,7 @@ systemctl daemon-reload
 systemctl enable mount-aperture.service
 systemctl start mount-aperture
 
-# Install Docker
+# Install Docker (to run RxDM and install libnccl-net)
 # Add Docker's official GPG key:
 apt-get install -y ca-certificates curl
 install -m 0755 -d /etc/apt/keyrings
@@ -227,14 +223,17 @@ gcloud auth configure-docker us-docker.pkg.dev
 NCCL_PLUGIN_IMAGE=us-docker.pkg.dev/gce-ai-infra/gpudirect-tcpxo/nccl-plugin-gpudirecttcpx-dev:v1.0.3
 RXDM_IMAGE=us-docker.pkg.dev/gce-ai-infra/gpudirect-tcpxo/tcpgpudmarxd-dev:v1.0.9
 RXDM_CONTAINER=receive-datapath-manager
+# Pre-pull images
 docker pull ${RXDM_IMAGE}
 docker pull ${NCCL_PLUGIN_IMAGE}
 set -e
 
+# Add script to install libnccl-net
 cat > /usr/local/install-ncclnet.sh << EOF
 #!/bin/bash
 
 # Install NCCL Net Plugin
+# Potentially can remove --pull=always if we have pre-pulled
 docker run --rm --gpus all --name nccl-installer --network=host --cap-add=NET_ADMIN \
   --pull=always \
   --volume /var/lib:/var/lib \
@@ -264,6 +263,7 @@ ENVEOF
 
 EOF
 
+# Create systemd service that installs libnccl-net on startup
 cat > /etc/systemd/system/install-nccl-net.service << 'EOF'
 [Unit]
 Description=Install NCCL Network Library
@@ -281,9 +281,10 @@ Type=oneshot
 WantedBy = multi-user.target
 EOF
 
+# Create script that runs the RxDM process.
 cat > /usr/local/start-rxdm.sh << EOF
-
 # Start FasTrak receive-datapath-manager
+# Potentially can remove --pull=always if we have pre-pulled
 docker run \
   --pull=always \
   --rm \
@@ -299,6 +300,7 @@ docker run \
   --num_hops=2 --num_nics=8 --uid= --alsologtostderr
 EOF
 
+# Create systemd service that starts RxDM process as a service.
 cat > /etc/systemd/system/rxdm.service << EOF
 [Unit]
 Description=Run TCPXO RxDM Sidecar Container
@@ -315,6 +317,8 @@ ExecStopPost=docker container stop ${RXDM_CONTAINER}
 WantedBy = multi-user.target
 EOF
 
+
+# (Optional) Create a RAID0 of all the local ssd devices
 cat > /usr/local/mount_localssd.sh << 'EOF'
 #!/bin/bash
 set -e -o pipefail
@@ -344,6 +348,7 @@ mount --source LABEL="$DISK_LABEL" --target="$DST_MNT" -o "$OPTIONS"
 chmod 1777 "$DST_MNT"
 EOF
 
+# (Optional) Create systemd service to RAID0 the local ssd
 cat > /etc/systemd/system/mount-local-ssd.service << EOF
 [Unit]
 Description=Assemble local SSDs as software RAID; then format and mount
@@ -358,11 +363,25 @@ Type=oneshot
 WantedBy=local-fs.target
 EOF
 
-
 systemctl daemon-reload
 systemctl enable install-nccl-net.service
 systemctl enable rxdm.service
 systemctl enable mount-local-ssd.service
+
+# (Optional) Install openmpi, NCCL, nccl-tests
+apt-get install -y libopenmpi-dev
+
+mkdir -p /opt/src
+cd /opt/src
+git clone -b v2.22.3-1 https://github.com/NVIDIA/nccl.git
+cd /opt/src/nccl
+make -j src.build NVCC_GENCODE="-gencode=arch=compute_90,code=sm_90"
+make install
+
+cd /opt/src
+git clone https://github.com/NVIDIA/nccl-tests.git
+cd /opt/src/nccl-tests
+MPI=1 CC=mpicc CXX=mpicxx make -j
 
 echo "Installation of TCPXO Components Completed"
 
