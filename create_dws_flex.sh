@@ -20,7 +20,7 @@ GPU7_SUBNET=$NETWORK_PREFIX-gpunet-8-subnet
 
 # --image-family=projects/hpc-toolkit-gsc/global/images/debian-12-bookworm-v20240515-tcpxo \
 # --image=debian-12-bookworm-tcpxo-v20240515-20240730212714z \
-gcloud config set compute/zone $REGION
+gcloud config set compute/region $REGION
 gcloud config set compute/zone $ZONE
 
 gcloud compute instance-templates create  $NETWORK_PREFIX-instance-template \

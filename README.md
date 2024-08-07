@@ -118,6 +118,7 @@ export COUNT=2
 ```
 
 Then create the instances:
+
 For SPOT:
 ```
 bash create_instances.sh
