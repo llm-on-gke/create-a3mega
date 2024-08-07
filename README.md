@@ -13,11 +13,22 @@ cluster](https://cloud.google.com/cluster-toolkit/docs/deploy/deploy-a3-mega-clu
 with all these same features, or use
 [GKE](https://cloud.google.com/kubernetes-engine/docs/how-to/gpu-bandwidth-gpudirect-tcpx).
 
-1. Setting environment variables. First set the following environment variables:
+1. Setting environment variables. First set the following environment variables, update set_envs.sh
 
 ```
-export PROJECT=<your-gcp-project>
-export ZONE=<zone to use for image build>  # e.g. us-central1-c is fine
+export PROJECT=northam-ce-mlai-tpu
+export IMAGE_PROJECT=northam-ce-mlai-tpu
+export PROJECT_NUMBER=9452062936
+export REGION=asia-northeast1
+export ZONE=asia-northeast1-b
+export NETWORK_PREFIX=deshaw-test
+export PROVISION_MODE=SPOT #spot or standard
+export COUNT=1
+export RESERVATION=projects/$PROJECT/reservations/a3-mega-us-central1-c # optional for DWS future reservation name
+```
+Then run the command to source set_envs.sh
+```
+source set_envs.sh
 ```
 
 2. Run image building process. This is similar in nature to what a solution like
@@ -102,9 +113,17 @@ export COUNT=2
 ```
 
 Then create the instances:
-
+For SPOT:
 ```
 bash create_instances.sh
+```
+For DWS Calendar mode:
+```
+bash create_dws_calendar.sh
+```
+For DWS Flex mode:
+```
+bash create_dws_flex.sh
 ```
 
 This uses the gcloud compute instances bulk create API.
