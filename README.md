@@ -30,8 +30,36 @@ Then run the command to source set_envs.sh
 ```
 source set_envs.sh
 ```
+2. Creating the A3-Mega VPCs for the GPU-GPU Communication
 
-2. Run image building process. This is similar in nature to what a solution like
+```
+PREFIX=a3mega-manual
+REGION=us-central1
+
+for N in $(seq 1 8); do
+    gcloud compute networks create ${PREFIX}-net-$N \
+        --subnet-mode=custom \
+        --mtu=8244
+
+    gcloud compute networks subnets create ${PREFIX}-sub-$N \
+        --network=${PREFIX}-net-$N \
+        --region=${REGION} \
+        --range=192.168.$N.0/24
+
+    gcloud compute firewall-rules create ${PREFIX}-internal-$N \
+      --network=${PREFIX}-net-$N \
+      --action=ALLOW \
+      --rules=tcp:0-65535,udp:0-65535,icmp \
+      --source-ranges=192.168.0.0/16
+done
+```
+You can run the following script to create the main network VPC and 8 gpu network VPC
+```
+bash create_netwwork.sh
+```
+
+
+3. Run image building process. This is similar in nature to what a solution like
 Packer would do. Creates an instance, runs a startup script that installs a set
 of software, stops the instance, and creates a compute image from the image
 disk.
@@ -68,33 +96,6 @@ Deleted [https://www.googleapis.com/compute/v1/projects/<your-project>/zones/us-
 
 At this point you have a new custom OS that can be used to create VMs with.
 
-3. Creating the A3-Mega VPCs for the GPU-GPU Communication
-
-```
-PREFIX=a3mega-manual
-REGION=us-central1
-
-for N in $(seq 1 8); do
-    gcloud compute networks create ${PREFIX}-net-$N \
-        --subnet-mode=custom \
-        --mtu=8244
-
-    gcloud compute networks subnets create ${PREFIX}-sub-$N \
-        --network=${PREFIX}-net-$N \
-        --region=${REGION} \
-        --range=192.168.$N.0/24
-
-    gcloud compute firewall-rules create ${PREFIX}-internal-$N \
-      --network=${PREFIX}-net-$N \
-      --action=ALLOW \
-      --rules=tcp:0-65535,udp:0-65535,icmp \
-      --source-ranges=192.168.0.0/16
-done
-```
-You can run the following script to create the main network VPC and 8 gpu network VPC
-```
-bash create_netwwork.sh
-```
 
 4. Creating A3-Mega VMs. Now that we have the new VM image, we'll use it to
 launch 2 test A3-Mega VMs. First set these variables to match the VPCs that
