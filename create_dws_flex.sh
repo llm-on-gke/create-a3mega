@@ -7,7 +7,7 @@ REGION=asia-northeast1
 ZONE=asia-northeast1-b
 NETWORK_PREFIX=deshaw-test
 PROVISION_MODE=STANDARD #spot or standard
-NUM_NODES=1
+COUNT=1
 REQUEST_RUN_DURATION=24h #maxium 7 days, use format, 1d10h
 
 #RESEREVATION=projects/$PROJECT/reservations/a3-mega-us-central1-c #future reservation name
@@ -64,7 +64,7 @@ gcloud beta compute instance-groups managed create $NETWORK_PREFIX-mig   \
 
 gcloud beta compute instance-groups managed resize-requests create $NETWORK_PREFIX-mig  \
     --resize-request=$NETWORK_PREFIX-request \
-    --resize-by=$NUM_NODES \
+    --resize-by=$COUNT \
     --requested-run-duration=$REQUEST_RUN_DURATION \ 
     --zone=$ZONE
 
