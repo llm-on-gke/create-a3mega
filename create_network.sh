@@ -30,7 +30,7 @@ gcloud compute firewall-rules create $NETWORK_PREFIX-mgmt-external-ssh \
  --rules=tcp:22 \
  --source-ranges=35.235.240.0/20
 
-for N in $(seq 2 8); do
+for N in $(seq 1 8); do
 gcloud compute networks create $NETWORK_PREFIX-net-$N \
     --subnet-mode=custom \
     --mtu=8244
