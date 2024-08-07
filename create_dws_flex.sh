@@ -3,9 +3,12 @@ set -eu
 PROJECT=northam-ce-mlai-tpu
 IMAGE_PROJECT=northam-ce-mlai-tpu
 PROJECT_NUMBER=9452062936
+REGION=asia-northeast1
 ZONE=asia-northeast1-b
 NETWORK_PREFIX=deshaw-test
 PROVISION_MODE=STANDARD #spot or standard
+NUM_NODES=1
+REQUEST_RUN_DURATION=24h #maxium 7 days, use format, 1d10h
 
 #RESEREVATION=projects/$PROJECT/reservations/a3-mega-us-central1-c #future reservation name
 SYS_SUBNET=$NETWORK_PREFIX-mgmt-sub
@@ -24,6 +27,8 @@ GPU7_SUBNET=$NETWORK_PREFIX-gpunet-8-subnet
 
 # --image-family=projects/hpc-toolkit-gsc/global/images/debian-12-bookworm-v20240515-tcpxo \
 # --image=debian-12-bookworm-tcpxo-v20240515-20240730212714z \
+gcloud config set compute/zone $REGION
+gcloud config set compute/zone $ZONE
 
 gcloud compute instance-templates create  $NETWORK_PREFIX-instance-template \
     --project=$PROJECT \
@@ -44,9 +49,6 @@ gcloud compute instance-templates create  $NETWORK_PREFIX-instance-template \
     --metadata=enable-oslogin=true \
     --provisioning-model=$PROVISION_MODE \
     --reservation-affinity=none \
-    --zone=$ZONE \
-    --on-host-maintenance=TERMINATE \
-    --maintenance-interval=PERIODIC \
     --service-account=$PROJECT_NUMBER-compute@developer.gserviceaccount.com \
     --scopes=https://www.googleapis.com/auth/cloud-platform \
     --boot-disk-size=200 \
@@ -62,8 +64,8 @@ gcloud beta compute instance-groups managed create $NETWORK_PREFIX-mig   \
 
 gcloud beta compute instance-groups managed resize-requests create $NETWORK_PREFIX-mig  \
     --resize-request=$NETWORK_PREFIX-request \
-    --resize-by=1 \
-    --requested-run-duration=600m \ # actual run duration in 1d2h3m4s
+    --resize-by=$NUM_NODES \
+    --requested-run-duration=$REQUEST_RUN_DURATION \ 
     --zone=$ZONE
 
 #--metadata-from-file=startup-script=install_nvidia.sh \
