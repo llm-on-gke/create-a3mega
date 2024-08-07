@@ -1,10 +1,6 @@
 #!/bin/bash
 set -eu
-NETWORK_PREFIX=deshaw-test
-PROJECT=northam-ce-mlai-tpu
-IMAGE_PROJECT=northam-ce-mlai-tpu
-PROJECT_NUMBER=9452062936
-ZONE=asia-northeast1-b
+
 SYS_SUBNET=$NETWORK_PREFIX-mgmt-sub
 #RESERVATION=projects/hpc-toolkit-gsc/reservations/a3-mega-us-central1-c
 #RESERVATION=a3-mega-us-central1-c

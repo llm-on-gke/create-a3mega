@@ -1,13 +1,6 @@
 #!/bin/bash
 set -eu
-PROJECT=northam-ce-mlai-tpu
-IMAGE_PROJECT=northam-ce-mlai-tpu
-PROJECT_NUMBER=9452062936
-REGION=asia-northeast1
-ZONE=asia-northeast1-b
-NETWORK_PREFIX=deshaw-test
-PROVISION_MODE=STANDARD #spot or standard
-COUNT=1
+
 REQUEST_RUN_DURATION=24h #maxium 7 days, use format, 1d10h
 
 #RESEREVATION=projects/$PROJECT/reservations/a3-mega-us-central1-c #future reservation name

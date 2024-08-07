@@ -1,9 +1,5 @@
 #!/bin/bash
 set -eu
-
-PROJECT=northam-ce-mlai-tpu
-NETWORK_PREFIX=deshaw-test
-REGION=asia-northeast1
 #Main network and subnet
 gcloud compute networks create $NETWORK_PREFIX-mgmt-net \
   --project=$PROJECT \

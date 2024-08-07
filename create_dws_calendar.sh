@@ -1,13 +1,5 @@
 #!/bin/bash
 set -eu
-PROJECT=northam-ce-mlai-tpu
-IMAGE_PROJECT=northam-ce-mlai-tpu
-PROJECT_NUMBER=9452062936
-ZONE=asia-northeast1-b
-NETWORK_PREFIX=deshaw-test
-PROVISION_MODE=STANDARD #spot or standard
-RESERVATION=projects/$PROJECT/reservations/a3-mega-us-central1-c #future reservation name
-COUNT=1
 
 SYS_SUBNET=$NETWORK_PREFIX-mgmt-sub
 GPU0_SUBNET=$NETWORK_PREFIX-gpunet-1-subnet
