@@ -146,7 +146,7 @@ set -e
 
 # Install TCPXO import_helper
 apt install apt-transport-artifact-registry
-echo 'deb [arch=all] ar+https://us-apt.pkg.dev/projects/gce-ai-infra gpudirect-tcpxo-apt main' | \
+echo 'deb [trusted=yes arch=all] ar+https://us-apt.pkg.dev/projects/gce-ai-infra gpudirect-tcpxo-apt main' | \
   tee -a  /etc/apt/sources.list.d/artifact-registry.list
 apt update -y
 apt-get install -y dmabuf-import-helper
