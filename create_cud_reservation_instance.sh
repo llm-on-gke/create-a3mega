@@ -22,6 +22,7 @@ gcloud alpha compute instances bulk create \
     --zone=${ZONE} \
     --machine-type=a3-megagpu-8g \
     --maintenance-policy=TERMINATE \
+    --maintenance-interval=PERIODIC \
     --restart-on-failure \
     --network-interface=nic-type=GVNIC,subnet=${SYS_SUBNET} \
     --network-interface=nic-type=GVNIC,subnet=${GPU1_SUBNET} \
@@ -36,6 +37,7 @@ gcloud alpha compute instances bulk create \
     --provisioning-model=STANDARD \
     --reservation-affinity=specific \
     --reservation=${RESERVATION} \
+    --resource-policies=RESOURCE_POLICY_NAME \
     --scopes=https://www.googleapis.com/auth/cloud-platform \
     --boot-disk-size=200 \
     --boot-disk-type=pd-ssd \
