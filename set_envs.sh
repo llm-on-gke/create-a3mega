@@ -7,4 +7,5 @@ export NETWORK_PREFIX=spot-test
 export PROVISION_MODE=SPOT #spot or standard
 export COUNT=1
 export RESERVATION=projects/$PROJECT/reservations/a3-mega-us-central1-c # optional for DWS future reservation name
+export OS_TYPE=Debian #Debian or Ubuntu
 
