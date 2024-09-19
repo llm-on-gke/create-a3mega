@@ -58,7 +58,7 @@ gcloud beta compute instance-groups managed create $NETWORK_PREFIX-mig   \
 gcloud beta compute instance-groups managed resize-requests create $NETWORK_PREFIX-mig  \
     --resize-request=$NETWORK_PREFIX-request \
     --resize-by=$COUNT \
-    --requested-run-duration=$REQUEST_RUN_DURATION \ 
+    --requested-run-duration=$REQUEST_RUN_DURATION \
     --zone=$ZONE
 
 #--metadata-from-file=startup-script=install_nvidia.sh \
