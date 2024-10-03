@@ -22,37 +22,18 @@ export PROJECT_NUMBER=9452062936
 export REGION=asia-northeast1
 export ZONE=asia-northeast1-b
 export NETWORK_PREFIX=spot-test
-export PROVISION_MODE=SPOT #spot or standard
+export PROVISION_MODE=SPOT #spot or standard, DWS need to use standard
 export COUNT=1
 export RESERVATION=projects/$PROJECT/reservations/a3-mega-us-central1-c # optional for DWS future reservation name
+export OS_TYPE=Debian #Debian or Ubuntu
 ```
 Then run the command to source set_envs.sh
 ```
 source set_envs.sh
 ```
-2. Creating the A3-Mega VPCs for the GPU-GPU Communication
+2. Creating the A3-Mega VPC/subnets for the GPU-GPU Communication
 
-```
-PREFIX=a3mega-manual
-REGION=us-central1
 
-for N in $(seq 1 8); do
-    gcloud compute networks create ${PREFIX}-net-$N \
-        --subnet-mode=custom \
-        --mtu=8244
-
-    gcloud compute networks subnets create ${PREFIX}-sub-$N \
-        --network=${PREFIX}-net-$N \
-        --region=${REGION} \
-        --range=192.168.$N.0/24
-
-    gcloud compute firewall-rules create ${PREFIX}-internal-$N \
-      --network=${PREFIX}-net-$N \
-      --action=ALLOW \
-      --rules=tcp:0-65535,udp:0-65535,icmp \
-      --source-ranges=192.168.0.0/16
-done
-```
 You can run the following script to create the main network VPC and 8 gpu network VPC
 ```
 bash create_netwwork.sh
