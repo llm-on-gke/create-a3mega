@@ -16,13 +16,13 @@ with all these same features, or use
 1. Setting environment variables. First set the following environment variables, update set_envs.sh
 
 ```
-export PROJECT=northam-ce-mlai-tpu
-export IMAGE_PROJECT=northam-ce-mlai-tpu
-export PROJECT_NUMBER=9452062936
-export REGION=asia-northeast1
-export ZONE=asia-northeast1-b
-export NETWORK_PREFIX=spot-test
-export PROVISION_MODE=SPOT #spot or standard, DWS need to use standard
+export PROJECT=<Project_ID>
+export IMAGE_PROJECT=<PROJECT_ID to store image>
+export PROJECT_NUMBER=<Project Number>
+export REGION=<Compute Region>
+export ZONE=<Compute Zone>
+export NETWORK_PREFIX=<Primary Name Fix>
+export PROVISION_MODE=standard #spot or standard, DWS need to use standard
 export COUNT=1
 export RESERVATION=projects/$PROJECT/reservations/a3-mega-us-central1-c # optional for DWS future reservation name
 export OS_TYPE=Debian #Debian or Ubuntu
