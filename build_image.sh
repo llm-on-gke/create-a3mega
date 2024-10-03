@@ -8,7 +8,7 @@ SYS_SUBNET=$NETWORK_PREFIX-mgmt-sub
 BASE_IMAGE=debian-12-bookworm-v20240515
 IMAGE_PROJECT=debian-cloud
 STARTUP_SCRIPT=startup_script.sh
-if [[ $(OS_TYPE) -eq 'Ubuntu' ]]; then
+if [[ "$OS_TYPE" == "Ubuntu" ]]; then
   BASE_IMAGE=ubuntu-2204-jammy-v20240904 #debian-12-bookworm-v20240709
   IMAGE_PROJECT=ubuntu-os-cloud #debian-cloud
   STARTUP_SCRIPT=startup_script_ubuntu.sh #startup_script.sh
