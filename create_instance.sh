@@ -22,7 +22,7 @@ gcloud alpha compute instances bulk create \
     --name-pattern=a3mega-vms-#### \
     --project=$PROJECT \
     --image-project=$IMAGE_PROJECT \
-    --image-family=debian-12-bookworm-v20240709-tcpxo \
+    --image-family=${BASE_IMAGE}-tcpxo \
     --machine-type=a3-megagpu-8g \
     --maintenance-policy=TERMINATE \
     --restart-on-failure \

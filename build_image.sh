@@ -5,11 +5,9 @@ SYS_SUBNET=$NETWORK_PREFIX-mgmt-sub
 #RESERVATION=a3-mega-us-central1-c
 #PLACEMENT_POLICY_NAME=a3-mega-md2-us-central1
 
-BASE_IMAGE=debian-12-bookworm-v20240515
 IMAGE_PROJECT=debian-cloud
 STARTUP_SCRIPT=startup_script.sh
 if [[ "$OS_TYPE" == "Ubuntu" ]]; then
-  BASE_IMAGE=ubuntu-2204-jammy-v20240904 #debian-12-bookworm-v20240709
   IMAGE_PROJECT=ubuntu-os-cloud #debian-cloud
   STARTUP_SCRIPT=startup_script_ubuntu.sh #startup_script.sh
 fi
@@ -23,8 +21,7 @@ gcloud compute instances create \
   --image=$BASE_IMAGE \
   --image-project=$IMAGE_PROJECT \
   --zone=$ZONE \
-  --machine-type=g2-standard-8 \
-  --accelerator type=nvidia-l4,count=1 \
+  --machine-type=c2-standard-8 \
   --preemptible \
   --maintenance-policy=TERMINATE \
   --restart-on-failure \

@@ -16,7 +16,7 @@ gcloud alpha compute instances bulk create \
     --name-pattern=a3mega-vms-#### \
     --project=$PROJECT \
     --image-project=${PROJECT} \
-    --image-family=debian-12-bookworm-v20240709-tcpxo \
+    --image-family=${BASE_IMAGE}-tcpxo \
     --project=${PROJECT} \
     --zone=${ZONE} \
     --machine-type=a3-megagpu-8g \
