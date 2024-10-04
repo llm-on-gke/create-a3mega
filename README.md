@@ -25,7 +25,8 @@ export NETWORK_PREFIX=<Primary Name Prefix>
 export PROVISION_MODE=standard #spot or standard, DWS need to use standard
 export COUNT=1
 export RESERVATION=projects/$PROJECT/reservations/a3-mega-us-central1-c # optional for DWS future reservation name
-export OS_TYPE=Debian #Debian or Ubuntu
+export OS_TYPE=Ubuntu #Debian or Ubuntu
+export BASE_IMAGE=ubuntu-2204-jammy-v20240904 #debian-12-bookworm-v20240515
 ```
 Then run the command to source set_envs.sh
 ```
