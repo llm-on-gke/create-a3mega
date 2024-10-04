@@ -31,8 +31,8 @@ Then run the command to source set_envs.sh
 ```
 source set_envs.sh
 ```
-2. Creating the A3-Mega VPC/subnets for the GPU-GPU Communication
-
+2. (Optional), Creating the A3-Mega VPC/subnets for the GPU-GPU Communication
+All the VMs will need connect to 9 subnets( 1 for default network, 8 for GPU direct TCXPO)
 
 You can run the following script to create the main network VPC and 8 gpu network VPC
 ```
@@ -81,24 +81,16 @@ At this point you have a new custom OS that can be used to create VMs with.
 4. Creating A3-Mega VMs. Now that we have the new VM image, we'll use it to
 launch 2 test A3-Mega VMs. First set these variables to match the VPCs that
 you created.
-```
-export PROJECT=<your-project-name>
-export ZONE=<your-zone>
-export SYS_SUBNET=<your-normal-system-network>
-export GPU1_SUBNET=${PREFIX}-sub-1
-export GPU2_SUBNET=${PREFIX}-sub-2
-export GPU3_SUBNET=${PREFIX}-sub-3
-export GPU4_SUBNET=${PREFIX}-sub-4
-export GPU5_SUBNET=${PREFIX}-sub-5
-export GPU6_SUBNET=${PREFIX}-sub-6
-export GPU7_SUBNET=${PREFIX}-sub-7
-export GPU8_SUBNET=${PREFIX}-sub-8
-export RESERVATION=<your-reservation>
-# How many VMS
-export COUNT=2
-```
 
-Then create the instances:
+Check the set_envs.sh, with correct number of VMS,
+export COUNT=XX. 
+To create the instances with different options, run the shell scripts:
+
+For CUD reservations:
+```
+source set_envs.sh
+bash create_cud_reservation.sh
+```
 
 For SPOT:
 ```
