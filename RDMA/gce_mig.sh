@@ -1,5 +1,7 @@
 export PROJECT_ID=gpu-launchpad-playground
 # non GPU networks
+gcloud config set compute/region us-central1
+
 for N in $(seq 0 1); do
     # Create custom network
     gcloud compute networks create b200-gvnic-crtr-net-$N \
