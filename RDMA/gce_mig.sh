@@ -61,9 +61,10 @@ gcloud beta compute instance-templates create rick-b200-it \
     --maintenance-policy=TERMINATE \
     --max-run-duration=3600s \
     --provisioning-model=FLEX_START \
+    --boot-disk-size=200GB \
     --reservation-affinity=none \
-    --image-project=rocky-linux-accelerator-cloud \
-    --image=rocky-linux-8-optimized-gcp-nvidia-570-v20250710 \
+    --image-project=ubuntu-os-accelerator-images \
+    --image=ubuntu-accelerator-2204-amd64-with-nvidia-570-v20250712 \
     --network-interface=nic-type=GVNIC,network=b200-gvnic-crtr-net-0,subnet=b200-gvnic-crtr-sub-0 \
 --network-interface=nic-type=GVNIC,network=b200-gvnic-crtr-net-1,subnet=b200-gvnic-crtr-sub-1,no-address \
 --network-interface=nic-type=MRDMA,network=b200-rdma-crtr-mrdma,subnet=b200-rdma-crtr-mrdma-sub-0,no-address \

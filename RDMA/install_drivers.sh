@@ -174,12 +174,14 @@ echo '/usr/local/lib' | sudo tee /etc/ld.so.conf.d/openmpi.conf
 cd ../
 rm -rf openmpi*
 
-mkdir -p /opt/src
-cd /opt/src
-git clone -b v${NCCL_VERSION} https://github.com/NVIDIA/nccl.git
-cd /opt/src/nccl
-make -j src.build NVCC_GENCODE="-gencode=arch=compute_90,code=sm_90"
-make install
+#mkdir -p /opt/src
+#cd /opt/src
+#git clone -b v${NCCL_VERSION} https://github.com/NVIDIA/nccl.git
+#cd /opt/src/nccl
+#make -j src.build NVCC_GENCODE="-gencode=arch=compute_100,code=sm_100" #use 100 for B200, 90 for H200   
+#make install
+
+apt-get install libnccl-dev libnccl2
 
 mkdir -p /opt/src
 cd /opt/src
